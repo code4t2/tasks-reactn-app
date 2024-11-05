@@ -1,14 +1,24 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import GoalInput from "../components/GoalInput";
 import GoalItem from "../components/GoalItem";
 
 function Index() {
   const [courseGoals, setCourseGoals] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  function startAddGoalHandler() {
+    setIsModalVisible(true);
+  }
+
+  function endGoalHandler() {
+    setIsModalVisible(false);
+  }
 
   function addGoalHandler(enteredGoalText: string) {
     setCourseGoals((c) => [...c, { text: enteredGoalText, id: Math.random().toString() }]);
+    endGoalHandler();
   }
 
   function deleteGoalHandler(id) {
@@ -19,7 +29,8 @@ function Index() {
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onPressAddGoal={addGoalHandler} />
+      <Button title="Add new Goal" color="#5e0acc" onPress={startAddGoalHandler} />
+      <GoalInput visible={isModalVisible} onPressAddGoal={addGoalHandler} onCancel={endGoalHandler} />
       <View>
         <FlatList
           data={courseGoals}
