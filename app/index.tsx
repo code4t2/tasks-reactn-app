@@ -11,6 +11,12 @@ function Index() {
     setCourseGoals((c) => [...c, { text: enteredGoalText, id: Math.random().toString() }]);
   }
 
+  function deleteGoalHandler(id) {
+    setCourseGoals((currentCourseGoals) => {
+      return currentCourseGoals.filter((goal) => goal.id !== id);
+    });
+  }
+
   return (
     <View style={styles.appContainer}>
       <GoalInput onPressAddGoal={addGoalHandler} />
@@ -20,7 +26,7 @@ function Index() {
           style={styles.goalsContainer}
           keyExtractor={(item, index) => item.id}
           renderItem={(itemData) => {
-            return <GoalItem text={itemData.item.text} />;
+            return <GoalItem text={itemData.item.text} id={itemData.item.id} onDeleteItem={deleteGoalHandler} />;
           }}
         />
       </View>
