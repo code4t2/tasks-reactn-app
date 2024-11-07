@@ -11,7 +11,7 @@
   "tasks": {
     "start": {
       "name": "start",
-      "command": "npm run start",
+      "command": "npm run start-codesandbox",
       "runAtStart": true,
       "preview": {
         "port": 8080
