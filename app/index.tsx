@@ -1,36 +1,64 @@
-import {Button, StyleSheet, Text, TextInput, View} from "react-native";
+import { useState } from "react";
+import { Button, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import GoalInput from "../components/GoalInput";
+import GoalItem from "../components/GoalItem";
+import { StatusBar } from "expo-status-bar";
 
 function Index() {
-    return (
-        <View style={styles.appContainer}>
-            <View style={styles.inputContainer}>
-                <TextInput style={styles.textInput} placeholder='input your goal here'/>
-                <Button title='Add Goal'/>
-            </View>
-            <View>
-                <Text>List of goals...</Text>
-            </View>
-        </View>
-    );
+  const [courseGoals, setCourseGoals] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  function startAddGoalHandler() {
+    setIsModalVisible(true);
+  }
+
+  function endGoalHandler() {
+    setIsModalVisible(false);
+  }
+
+  function addGoalHandler(enteredGoalText: string) {
+    setCourseGoals((c) => [...c, { text: enteredGoalText, id: Math.random().toString() }]);
+    endGoalHandler();
+  }
+
+  function deleteGoalHandler(id: string) {
+    setCourseGoals((currentCourseGoals) => {
+      return currentCourseGoals.filter((goal) => goal.id !== id);
+    });
+  }
+
+  return (
+    <>
+    <StatusBar style="light" />
+    <View style={styles.appContainer}>
+      <Button title="Add new Goal" color="#5e0acc" onPress={startAddGoalHandler} />
+      <GoalInput isVisible={isModalVisible} onPressAddGoal={addGoalHandler} onCancel={endGoalHandler} />
+      <View>
+        <FlatList
+          data={courseGoals}
+          style={styles.goalsContainer}
+          keyExtractor={(item, index) => item.id}
+          renderItem={(itemData) => {
+            return <GoalItem text={itemData.item.text} id={itemData.item.id} onDeleteItem={deleteGoalHandler} />;
+          }}
+        />
+      </View>
+    </View>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
-    appContainer: {
-        paddingTop: 50,
-        paddingHorizontal: 16,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    textInput: {
-        borderWidth: 1,
-        borderColor: '#808080',
-        width: '70%',
-        marginRight: 8,
-        padding: 8,
-    }
-})
+  appContainer: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 16,
+    backgroundColor: '#1e085a'
+  },
+  goalsContainer: {
+    flex: 4,
+  },
+});
 
 export default Index;

@@ -1,5 +1,10 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "alwaysStrict": true,
+    "allowUnusedLabels": false,
+    "noImplicitOverride": true
+  },
   "extends": "expo/tsconfig.base",
   "include": [
     "**/*.ts",
