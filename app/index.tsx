@@ -3,6 +3,7 @@ import { Button, StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import GoalInput from "../components/GoalInput";
 import GoalItem from "../components/GoalItem";
+import { StatusBar } from "expo-status-bar";
 
 function Index() {
   const [courseGoals, setCourseGoals] = useState([]);
@@ -21,16 +22,18 @@ function Index() {
     endGoalHandler();
   }
 
-  function deleteGoalHandler(id) {
+  function deleteGoalHandler(id: string) {
     setCourseGoals((currentCourseGoals) => {
       return currentCourseGoals.filter((goal) => goal.id !== id);
     });
   }
 
   return (
+    <>
+    <StatusBar style="light" />
     <View style={styles.appContainer}>
       <Button title="Add new Goal" color="#5e0acc" onPress={startAddGoalHandler} />
-      <GoalInput visible={isModalVisible} onPressAddGoal={addGoalHandler} onCancel={endGoalHandler} />
+      <GoalInput isVisible={isModalVisible} onPressAddGoal={addGoalHandler} onCancel={endGoalHandler} />
       <View>
         <FlatList
           data={courseGoals}
@@ -42,6 +45,7 @@ function Index() {
         />
       </View>
     </View>
+    </>
   );
 }
 
@@ -50,6 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     paddingHorizontal: 16,
+    backgroundColor: '#1e085a'
   },
   goalsContainer: {
     flex: 4,
